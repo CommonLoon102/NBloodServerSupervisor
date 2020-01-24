@@ -8,6 +8,5 @@ namespace Supervisor
     {
         public int Port { get; set; }
         public bool IsStarted { get; set; }
-        public bool IsPrivate { get; set; }
     }
 }

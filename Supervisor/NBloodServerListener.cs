@@ -63,14 +63,12 @@ namespace Supervisor
                 {
                     Port = packetData.Port,
                     IsStarted = packetData.IsStarted,
-                    IsPrivate = packetData.IsPrivate,
                     CurrentPlayers = packetData.CurrentPlayers,
                     MaximumPlayers = packetData.MaximumPlayers
                 },
                 (port, server) =>
                 {
                     server.IsStarted = packetData.IsStarted;
-                    server.IsPrivate = packetData.IsPrivate;
                     server.CurrentPlayers = packetData.CurrentPlayers;
                     server.MaximumPlayers = packetData.MaximumPlayers;
                     return server;

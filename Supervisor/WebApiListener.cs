@@ -61,6 +61,7 @@ namespace Supervisor
             int processId = int.Parse(split[1]);
             Program.State.Servers.AddOrUpdate(port, new Server()
             {
+                Port = port,
                 ProcessId = processId,
                 IsPrivate = true
             },

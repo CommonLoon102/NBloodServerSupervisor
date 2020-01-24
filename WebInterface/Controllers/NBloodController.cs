@@ -58,8 +58,8 @@ namespace WebInterface.Controllers
 
                 _isBusy = true;
 
-                if (parameters.Players < 2)
-                    parameters.Players = 2;
+                if (parameters.Players < 3)
+                    parameters.Players = 3;
 
                 if (parameters.ApiKey != _config.GetValue<string>("ApiKey"))
                     return new StartServerResponse("Invalid ApiKey.");
