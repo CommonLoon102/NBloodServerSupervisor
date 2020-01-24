@@ -64,19 +64,14 @@ namespace WebInterface.Controllers
                 if (parameters.ApiKey != _config.GetValue<string>("ApiKey"))
                     return new StartServerResponse("Invalid ApiKey.");
 
-                string nbloodPath = _config.GetValue<string>("NBloodPath");
-                if (!System.IO.File.Exists(nbloodPath))
-                    throw new Exception($"The configured path for the nblood executable is invalid.");
-
-                string processName = Path.GetFileNameWithoutExtension(nbloodPath);
+                string processName = Constants.NBloodExecutable;
                 int serversRunning = Process.GetProcessesByName(processName).Count();
                 if (serversRunning >= _config.GetValue<int>("MaximumServers"))
                     return new StartServerResponse("The maximum number of servers are already running.");
 
                 int port = PortUtils.GetPort();
 
-                string args = BuildArgs(parameters, port);
-                var process = Process.Start(nbloodPath, args);
+                var process = Process.Start(NBloodServerStartInfo.Get(parameters.Players, port));
                 byte[] payload = Encoding.ASCII.GetBytes($"B{port}\t{process.Id}\0");
                 socket.SendTo(payload, webApiListenerEndPoint);
 
@@ -95,17 +90,6 @@ namespace WebInterface.Controllers
             {
                 _isBusy = false;
             }
-        }
-
-        private static string BuildArgs(ServerParameters parameters, int port)
-        {
-            string args = $"-server {parameters.Players} -port {port}";
-            if (parameters.IsBroadcast)
-            {
-                args += " -broadcast";
-            }
-
-            return args;
         }
 
         [HttpGet]

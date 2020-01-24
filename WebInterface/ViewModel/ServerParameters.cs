@@ -9,6 +9,5 @@ namespace WebInterface
     {
         public string ApiKey { get; set; }
         public int Players { get; set; }
-        public bool IsBroadcast { get; set; }
     }
 }

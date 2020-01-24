@@ -2,6 +2,7 @@
 using Model;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -45,11 +46,7 @@ namespace Supervisor
                 if (IsNewServerNeeded(i))
                 {
                     int port = PortUtils.GetPort();
-                    string nbloodServer = "nblood_server";
-                    bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-                    if (isWindows)
-                        nbloodServer += ".exe";
-                    var process = Process.Start(nbloodServer, $"-server {i} -port {port}");
+                    var process = Process.Start(NBloodServerStartInfo.Get(i, port));
                     Program.State.Servers.AddOrUpdate(port, new Server()
                     {
                         Port = port,
