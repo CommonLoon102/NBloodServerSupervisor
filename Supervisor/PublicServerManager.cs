@@ -1,10 +1,9 @@
 ﻿using Common;
 using Model;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,7 +11,7 @@ namespace Supervisor
 {
     class PublicServerManager
     {
-        public static void Start(string nbloodPath)
+        public static void Start()
         {
             Thread.Sleep(TimeSpan.FromSeconds(2));
             KillOrphanedServers();
@@ -20,7 +19,7 @@ namespace Supervisor
             {
                 while (true)
                 {
-                    LaunchNewServersWhenNeeded(nbloodPath);
+                    LaunchNewServersWhenNeeded();
                     Thread.Sleep(TimeSpan.FromSeconds(1));
                 }
             });
@@ -37,7 +36,7 @@ namespace Supervisor
             }
         }
 
-        private static void LaunchNewServersWhenNeeded(string nbloodPath)
+        private static void LaunchNewServersWhenNeeded()
         {
             const int maxPlayers = 8;
 
@@ -46,7 +45,11 @@ namespace Supervisor
                 if (IsNewServerNeeded(i))
                 {
                     int port = PortUtils.GetPort();
-                    var process = Process.Start(nbloodPath, $"-server {i} -port {port}");
+                    string nbloodServer = "nblood_server";
+                    bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+                    if (isWindows)
+                        nbloodServer += ".exe";
+                    var process = Process.Start(nbloodServer, $"-server {i} -port {port}");
                     Program.State.Servers.AddOrUpdate(port, new Server()
                     {
                         Port = port,

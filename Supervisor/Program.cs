@@ -8,14 +8,11 @@ namespace Supervisor
     {
         public static readonly State State = new State();
 
-        public static void Main(string[] args)
+        public static void Main()
         {
             NBloodServerListener.StartListening();
             WebApiListener.StartListening();
-
-            if (args.Length > 0)
-                PublicServerManager.Start(args[0]);
-
+            PublicServerManager.Start();
             PrivateServerManager.Start();
             
             while (true)

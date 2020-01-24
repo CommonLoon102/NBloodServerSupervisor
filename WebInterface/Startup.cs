@@ -1,17 +1,12 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace WebInterface
 {
@@ -25,16 +20,13 @@ namespace WebInterface
 
         private void StartSupervisor()
         {
-            string nbloodPath = Configuration.GetValue<string>("NBloodPath");
             bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
             string supervisor = "Supervisor";
             if (isWindows)
                 supervisor += ".exe";
-            if (!File.Exists(nbloodPath))
-                throw new Exception($"Couldn't find nblood_server at {nbloodPath}");
             if (!File.Exists(supervisor))
                 throw new Exception($"Couldn't find {supervisor} in {Directory.GetCurrentDirectory()}");
-            Process.Start(supervisor, nbloodPath);
+            Process.Start(supervisor);
         }
 
         public IConfiguration Configuration { get; }
