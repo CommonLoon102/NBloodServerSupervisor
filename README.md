@@ -4,8 +4,8 @@ Web API and NBlood server launcher service in .NET Core
 ## Debug with Visual Studio
 1. Publish `WebInterface` to a folder with Debug configuration
 2. Create a new folder in the publish folder and name it `blood`
-3. Compile NBlood with `make nblood NORENDER=1` or with `mingw32-make nblood NORENDER=1`
-4. Copy nblood.exe into the new `blood` folder and rename it to `nblood_server.exe`
+3. Compile NBlood with `make blood NORENDER=1` or with `mingw32-make blood NORENDER=1`
+4. Copy `nblood.exe` into the new `blood` folder and rename it to `nblood_server.exe`
 5. Copy the following files of Blood 1.21 into the `blood` folder:
 - BLOOD.INI
 - BLOOD.RFF
@@ -14,8 +14,8 @@ Web API and NBlood server launcher service in .NET Core
 - SURFACE.DAT
 - TILES000.ART-TILES017.ART
 - VOXEL.DAT
-6. Start WebInterface.exe
-7. Attach the debugger to WebInterface.exe and/or Supervisor.exe
+6. Start `WebInterface.exe`
+7. Attach the debugger to `WebInterface.exe` and/or `Supervisor.exe`
 8. You can call the following URLs with your web browser or Postman:
 - http://localhost:5000/nblood/api/listservers
 - http://localhost:5000/nblood/api/startserver?players=3&ApiKey=CHANGEME
