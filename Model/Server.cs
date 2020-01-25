@@ -8,6 +8,7 @@ namespace Model
     public class Server
     {
         public DateTime SpawnedAtUtc { get; set; } = DateTime.UtcNow;
+        public DateTime LastHeartBeatUtc { get; set; }
         public int ProcessId { get; set; }
         public int Port { get; set; }
         public bool IsStarted { get; set; }
