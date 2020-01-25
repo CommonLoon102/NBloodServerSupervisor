@@ -46,6 +46,13 @@ After you start the container, the following will happen:
 - `cat /supervisor/publish/appsettings.json | grep 'ApiKey'`
 - `exit`
 
+## Deploy the server onto Windows Server 2016 or newer
+This is not tested at all, but it should be possible, because it is possible to run Docker on Windows Server 2016 or newer. Therefore the steps would be very similar as above:
+1. Download the `Dockerfile` from here: `https://raw.githubusercontent.com/CommonLoon102/NBloodServerSupervisor/master/Dockerfile`
+2. Build the Docker image based on the Dockerfile, you should use PowerShell I guess: `docker build -t nblood-supervisor:latest .`
+3. Navigate to your Blood 1.21 directory (step #4 from above).
+4. Run the container, I don't know the command, should be something like this, open a PR if you know: `docker run --volume $((pwd).Path):/supervisor/publish/blood --network=host --detach nblood-supervisor`
+
 ## Usage
 You can list the currently running public servers via this URL:
 
