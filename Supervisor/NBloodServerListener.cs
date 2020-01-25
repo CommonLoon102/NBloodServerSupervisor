@@ -66,6 +66,7 @@ namespace Supervisor
                 new Server()
                 {
                     Port = packetData.Port,
+                    LastHeartBeatUtc = DateTime.UtcNow,
                     IsStarted = packetData.IsStarted,
                     CurrentPlayers = packetData.CurrentPlayers,
                     MaximumPlayers = packetData.MaximumPlayers
