@@ -173,7 +173,6 @@ namespace Supervisor
                 isSuccess = Program.State.Servers.TryRemove(packetData.Port, out _);
                 Thread.Sleep(TimeSpan.FromSeconds(1));
             } while (!isSuccess);
-            
         }
 
         private static string GetGameType(int gameType)
