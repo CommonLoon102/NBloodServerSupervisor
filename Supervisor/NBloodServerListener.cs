@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 
 namespace Supervisor
 {
@@ -36,6 +37,9 @@ namespace Supervisor
                     break;
                 case 'C':
                     ProcessFragsPacket(buffer);
+                    break;
+                case 'D':
+                    ProcessRemovePacket(message);
                     break;
                 default:
                     break;
@@ -148,6 +152,27 @@ namespace Supervisor
                     server.Players[i].Score = packetData.Scores[i];
                 return server;
             });
+        }
+
+        private static void ProcessRemovePacket(string message)
+        {
+            string[] splitMessage = message.SplitMessage();
+            var packetData = new RemoveServer()
+            {
+                Port = int.Parse(splitMessage[0])
+            };
+
+            UpdateState(packetData);
+        }
+
+        private static void UpdateState(RemoveServer packetData)
+        {
+            bool isSuccess;
+            do
+            {
+                isSuccess = Program.State.Servers.TryRemove(packetData.Port, out _);
+                Thread.Sleep(TimeSpan.FromSeconds(1));
+            } while (!isSuccess);
         }
 
         private static string GetGameType(int gameType)
