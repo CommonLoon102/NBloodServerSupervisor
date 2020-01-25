@@ -23,9 +23,8 @@ Web API and NBlood server launcher service in .NET Core
 ## Deploy the server onto GNU/Linux
 1. Install Docker and wget (if you don't have already), for example like this: `sudo snap install docker && sudo apt install wget -y`
 2. Download the Dockerfile: `wget https://raw.githubusercontent.com/CommonLoon102/NBloodServerSupervisor/master/Dockerfile --directory-prefix=supervisor`
-3. Switch to the new `supervisor` directory: `cd supervisor`
-4. Build the Docker image: `sudo docker build -t nblood-supervisor:latest .`
-5. Navigate to your Blood 1.21 directory where you have these files:
+3. Build the Docker image: `sudo docker build -t nblood-supervisor:latest supervisor`
+4. Navigate to your Blood 1.21 directory where you have these files:
 - BLOOD.INI
 - BLOOD.RFF
 - GUI.RFF
@@ -33,8 +32,8 @@ Web API and NBlood server launcher service in .NET Core
 - SURFACE.DAT
 - TILES000.ART-TILES017.ART
 - VOXEL.DAT
-6. Run a Docker container from there: `sudo docker run --volume "$PWD":/supervisor/publish/blood --network=host --detach nblood-supervisor`
-7. Optional: You can see the ApiKey here:
+5. Run a Docker container from there: `sudo docker run --volume "$PWD":/supervisor/publish/blood --network=host --detach nblood-supervisor`
+6. Optional: You can see the ApiKey here:
 - `sudo docker run -it nblood-supervisor /bin/bash`
 - `cat /supervisor/publish/appsettings.json | grep 'ApiKey'`
 - `exit`
