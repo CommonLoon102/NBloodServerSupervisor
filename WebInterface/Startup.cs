@@ -38,7 +38,7 @@ namespace WebInterface
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.Add(new ServiceDescriptor(typeof(ListServersService), new ListServersService()));
+            services.Add(new ServiceDescriptor(typeof(IListServersService), typeof(ListServersService), ServiceLifetime.Singleton));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
