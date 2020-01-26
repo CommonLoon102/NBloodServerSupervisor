@@ -15,6 +15,7 @@ namespace Model
         public int CurrentPlayers { get; set; }
         public int MaximumPlayers { get; set; }
         public string GameType { get; set; }
+        public Mod Mod { get; set; }
         public IList<Player> Players { get; set; } = new List<Player>();
     }
 }

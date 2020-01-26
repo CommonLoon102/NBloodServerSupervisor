@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Model;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -12,9 +13,9 @@ namespace Common
     {
         private static readonly string workingDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "blood");
 
-        public static ProcessStartInfo Get(int maxPlayers, int port)
+        public static ProcessStartInfo Get(int maxPlayers, int port, Mod mod)
         {
-            var psi = new ProcessStartInfo(GetExecutable(), $"-server {maxPlayers} -port {port} -pname Server")
+            var psi = new ProcessStartInfo(GetExecutable(), $"-server {maxPlayers} -port {port} -pname Server {mod.CommandLine}")
             {
                 UseShellExecute = true,
                 WorkingDirectory = workingDir

@@ -9,5 +9,6 @@ namespace WebInterface
     {
         public string ApiKey { get; set; }
         public int Players { get; set; }
+        public string ModName { get; set; }
     }
 }

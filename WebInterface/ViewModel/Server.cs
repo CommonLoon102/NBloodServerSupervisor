@@ -14,6 +14,7 @@ namespace WebInterface
         public int CurrentPlayers { get; set; }
         public int MaximumPlayers { get; set; }
         public string GameType { get; set; }
+        public string Mod { get; set; }
         public IList<Player> Players { get; set; } = new List<Player>();
     }
 }

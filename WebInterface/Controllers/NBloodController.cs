@@ -69,9 +69,10 @@ namespace WebInterface.Controllers
                 if (serversRunning >= _config.GetValue<int>("MaximumServers"))
                     return new StartServerResponse("The maximum number of servers are already running.");
 
+                Mod mod = GetMod(parameters.ModName);
                 int port = PortUtils.GetPort();
 
-                var process = Process.Start(NBloodServerStartInfo.Get(parameters.Players, port));
+                var process = Process.Start(NBloodServerStartInfo.Get(parameters.Players, port, mod));
                 byte[] payload = Encoding.ASCII.GetBytes($"B{port}\t{process.Id}\0");
                 socket.SendTo(payload, webApiListenerEndPoint);
 
@@ -79,7 +80,7 @@ namespace WebInterface.Controllers
                     parameters.Players, port);
 
                 Thread.Sleep(TimeSpan.FromSeconds(2));
-                return new StartServerResponse(port) { CommandLine = GetCommandLine(port) };
+                return new StartServerResponse(port) { CommandLine = GetCommandLine(port, mod) };
             }
             catch (Exception ex)
             {
@@ -98,7 +99,7 @@ namespace WebInterface.Controllers
         {
             try
             {
-                if (DateTime.UtcNow - _lastRefresh > TimeSpan.FromSeconds(5)
+                if (DateTime.UtcNow - _lastRefresh > TimeSpan.FromSeconds(1)
                     || _lastServerList == null)
                 {
                     byte[] payload = Encoding.ASCII.GetBytes($"A");
@@ -110,18 +111,21 @@ namespace WebInterface.Controllers
                     }
 
                     StateResponse stateResponse = (StateResponse)ByteArrayToObject(response);
-                    var webResponse = new ListServersResponse();
-                    webResponse.Servers = stateResponse.Servers.Where(s => !s.IsPrivate).Select(s => new Server()
+                    var webResponse = new ListServersResponse
                     {
-                        Port = s.Port,
-                        IsStarted = s.IsStarted,
-                        CommandLine = s.CurrentPlayers == s.MaximumPlayers ? "Sorry, the game is already started." : GetCommandLine(s.Port),
-                        GameType = s.GameType,
-                        CurrentPlayers = s.CurrentPlayers,
-                        MaximumPlayers = s.MaximumPlayers,
-                        Players = s.Players.Select(p => new Player() { Name = p.Name, Score = p.Score }).ToList(),
-                        SpawnedAtUtc = s.SpawnedAtUtc
-                    }).OrderBy(s => s.MaximumPlayers).ToList();
+                        Servers = stateResponse.Servers.Where(s => !s.IsPrivate).Select(s => new Server()
+                        {
+                            Port = s.Port,
+                            IsStarted = s.IsStarted,
+                            CommandLine = s.CurrentPlayers == s.MaximumPlayers ? "Sorry, the game is already started." : GetCommandLine(s.Port, s.Mod),
+                            GameType = s.GameType,
+                            Mod = s.Mod.FriendlyName,
+                            CurrentPlayers = s.CurrentPlayers,
+                            MaximumPlayers = s.MaximumPlayers,
+                            Players = s.Players.Select(p => new Player() { Name = p.Name, Score = p.Score }).ToList(),
+                            SpawnedAtUtc = s.SpawnedAtUtc
+                        }).OrderBy(s => s.MaximumPlayers).ToList()
+                    };
 
                     _lastServerList = webResponse;
                     _lastRefresh = DateTime.UtcNow;
@@ -136,6 +140,17 @@ namespace WebInterface.Controllers
             }
         }
 
+        private Mod GetMod(string modName)
+        {
+            if (string.IsNullOrWhiteSpace(modName))
+                return Constants.SupportedMods["BLOOD"];
+
+            if (!Constants.SupportedMods.ContainsKey(modName.ToUpper()))
+                throw new Exception("This mod is not supported: " + modName);
+
+            return Constants.SupportedMods[modName.ToUpper()];
+        }
+
         private static object ByteArrayToObject(byte[] arrBytes)
         {
             using (var memStream = new MemoryStream())
@@ -148,9 +163,9 @@ namespace WebInterface.Controllers
             }
         }
 
-        private string GetCommandLine(int port)
+        private string GetCommandLine(int port, Mod mod)
         {
-            return $"nblood -client {HttpContext.Request.Host.Host} -port {port}";
+            return $"nblood -client {HttpContext.Request.Host.Host} -port {port} {mod.CommandLine}";
         }
     }
 }

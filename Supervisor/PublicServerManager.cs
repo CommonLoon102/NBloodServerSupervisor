@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Supervisor
 {
-    class PublicServerManager
+    static class PublicServerManager
     {
         public static void Start()
         {
@@ -39,36 +39,43 @@ namespace Supervisor
 
         private static void LaunchNewServersWhenNeeded()
         {
-            const int maxPlayers = 8;
-
-            for (int i = 3; i <= maxPlayers; i++)
+            foreach (Mod mod in Constants.SupportedMods.Values)
             {
-                if (IsNewServerNeeded(i))
+                const int maxPlayers = 8;
+                for (int i = 3; i <= maxPlayers; i++)
                 {
-                    int port = PortUtils.GetPort();
-                    var process = Process.Start(NBloodServerStartInfo.Get(i, port));
-                    Program.State.Servers.AddOrUpdate(port, new Server()
+                    if (IsNewServerNeeded(i, mod))
                     {
-                        Port = port,
-                        ProcessId = process.Id,
-                        MaximumPlayers = i,
-                        CurrentPlayers = 1,
-                    },
-                    (prt, server) =>
-                    {
-                        server.ProcessId = process.Id;
-                        return server;
-                    });
+                        int port = PortUtils.GetPort();
+                        var process = Process.Start(NBloodServerStartInfo.Get(i, port, mod));
+                        Program.State.Servers.AddOrUpdate(port, new Server()
+                        {
+                            Port = port,
+                            ProcessId = process.Id,
+                            MaximumPlayers = i,
+                            CurrentPlayers = 1,
+                            Mod = mod,
+                        },
+                        (prt, server) =>
+                        {
+                            server.ProcessId = process.Id;
+                            server.MaximumPlayers = i;
+                            server.CurrentPlayers = 1;
+                            server.Mod = mod;
+                            return server;
+                        });
+                    }
                 }
-
-                Thread.Sleep(TimeSpan.FromSeconds(2));
             }
         }
 
-        private static bool IsNewServerNeeded(int i)
+        private static bool IsNewServerNeeded(int i, Mod mod)
         {
             return !Program.State.Servers.Values.Any(s =>
-                !s.IsPrivate && s.MaximumPlayers == i && s.CurrentPlayers < s.MaximumPlayers);
+                !s.IsPrivate
+                && s.Mod.Name == mod.Name
+                && s.MaximumPlayers == i
+                && s.CurrentPlayers < s.MaximumPlayers);
         }
     }
 }
