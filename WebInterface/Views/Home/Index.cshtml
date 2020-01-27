@@ -1,0 +1,148 @@
+﻿@model IEnumerable<WebInterface.Server>
+
+@{
+    Layout = null;
+    string b = "Blood";
+    string cp = "Cryptic Passage";
+    string dw = "Death Wish";
+    string fo = "Fleshed Out";
+    string twoira = "The Way of Ira";
+
+    Func<string, Microsoft.AspNetCore.Html.IHtmlContent>
+    ListServers = @<div>
+        @foreach (var server in Model.Where(s => s.Mod == item).OrderBy(s => s.MaximumPlayers))
+        {
+            <div style="border:2px solid cornflowerblue;">
+                <p style="font-weight:bold">Players: @(server.CurrentPlayers - 1)/@(server.MaximumPlayers - 1)</p>
+                <div>
+                    @if (server.IsStarted)
+                    {
+                        <p>Game Type: @server.GameType</p>
+                        <div>
+                            @foreach (var player in server.Players.Skip(1))
+                            {
+                                <p>@player.Name: @player.Score</p>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        @if (server.CurrentPlayers < server.MaximumPlayers)
+                        {
+                            <p>Command to join: <span class="code">@server.CommandLine</span></p>
+                        }
+                    }
+                </div>
+            </div>
+        }
+    </div>;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Blood servers</title>
+    <style>
+        .code {
+            font-family: Consolas;
+            background-color: black;
+            color: whitesmoke;
+        }
+        .warning {
+            border: dashed 4px red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body style="background-color: cornsilk">
+    <h1>The client EXE</h1>
+    <p>Use this exe to connect: <a href="https://lerppu.net/wannabethesis/nblood/20200113-2073/">https://lerppu.net/wannabethesis/nblood/20200113-2073/</a></p>
+
+    <h2>@b 1.21</h2>
+    <details>
+        <summary>Show @b <span style="font-weight:bolder">version 1.21</span> servers</summary>
+        <p>The below files must be in your Blood directory.</p>
+        <ul>
+            <li>BLOOD.INI</li>
+            <li>BLOOD.RFF</li>
+            <li>GUI.RFF</li>
+            <li>SOUNDS.RFF</li>
+            <li>SURFACE.DAT</li>
+            <li>TILES000.ART-TILES017.ART</li>
+            <li>VOXEL.DAT</li>
+        </ul>
+        @ListServers(@b)
+    </details>
+    <br />
+    <h2>@cp</h2>
+    <details>
+        <summary>Show @cp servers</summary>
+        <p>The below files must be in your Blood directory.</p>
+        <ul>
+            <li>CP01-CP09.MAP</li>
+            <li>CPART07.AR_ (Fresh Supply owners need to copy tiles007.ART from <span class="code">\addons\Cryptic Passage</span> and rename it</li>
+            <li>CPART15.AR_ (Fresh Supply owners need to copy tiles015.ART from <span class="code">\addons\Cryptic Passage</span> and rename it</li>
+            <li>CPBB01.MAP-CPBB04.MAP</li>
+            <li>CPSL.MAP</li>
+            <li>CRYPTIC.INI</li>
+        </ul>
+        <p class="warning">Don't forget to send back the ferry every time at the end of the last map, otherwise you cannot go back if the boss kills you!</p>
+        @ListServers(@cp)
+    </details>
+    <br />
+    <h2>@dw 1.6.10</h2>
+    <details>
+        <summary>Show @dw <span style="font-weight:bolder">version 1.6.10</span> servers</summary>
+        <p>The below files must be in your Blood directory.</p>
+        <ul>
+            <li>dw.ini</li>
+            <li>DWBB1.MAP-DWBB3.MAP</li>
+            <li>DWE1M1.MAP-DWE1M12.MAP</li>
+            <li>DWE2M1.MAP-DWE2M12.MAP</li>
+            <li>DWE3M1.MAP-DWE3M12.MAP</li>
+        </ul>
+        @ListServers(@dw)
+    </details>
+    <br />
+    <h2>@twoira 1.0.1</h2>
+    <details>
+        <summary>Show @twoira <span style="font-weight:bolder">version 1.0.1</span> servers</summary>
+        <p>@twoira </p>
+        <p>The below folder (TWOIRA) must be in your Blood directory, and inside that the other additional files.</p>
+        <ul>
+            <li>TWOIRA</li>
+            <li>
+                <ul>
+                    <li>IRA01.MAP</li>
+                    <li>IRA02_A.MAP</li>
+                    <li>IRA02_B.MAP</li>
+                    <li>IRA03.MAP</li>
+                    <li>IRA04.MAP</li>
+                    <li>IRA05.MAP</li>
+                    <li>IRA06.MAP</li>
+                    <li>IRA07.MAP</li>
+                    <li>IRA08.MAP</li>
+                    <li>SURFACE.DAT</li>
+                    <li>TILES18.ART</li>
+                    <li>twoira.ini</li>
+                </ul>
+            </li>
+        </ul>
+        @ListServers(twoira)
+    </details>
+    <h2>@fo 1.3</h2>
+    <details>
+        <summary>Show @fo <span style="font-weight:bolder">version 1.3</span> servers</summary>
+        <p>The below files must be in your Blood directory.</p>
+        <ul>
+            <li>fo.INI</li>
+            <li>fo1m1.MAP-fo1m8.MAP</li>
+        </ul>
+        <p class="warning">Not tested in co-op! But I hope it works! :)</p>
+        @ListServers(@fo)
+    </details>
+    <br />
+</body>
+</html>

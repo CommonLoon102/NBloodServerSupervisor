@@ -38,6 +38,7 @@ namespace WebInterface
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddControllersWithViews();
             services.Add(new ServiceDescriptor(typeof(IListServersService), typeof(ListServersService), ServiceLifetime.Singleton));
         }
 
