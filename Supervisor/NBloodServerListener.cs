@@ -26,23 +26,30 @@ namespace Supervisor
 
         private static void ProcessPacket(byte[] buffer)
         {
-            string message = Encoding.ASCII.GetString(buffer);
-            switch (message[0])
+            try
             {
-                case 'A':
-                    ProcessPlayerCountsPacket(message);
-                    break;
-                case 'B':
-                    ProcessPlayerNamesPacket(message);
-                    break;
-                case 'C':
-                    ProcessFragsPacket(buffer);
-                    break;
-                case 'D':
-                    ProcessRemovePacket(message);
-                    break;
-                default:
-                    break;
+                string message = Encoding.ASCII.GetString(buffer);
+                switch (message[0])
+                {
+                    case 'A':
+                        ProcessPlayerCountsPacket(message);
+                        break;
+                    case 'B':
+                        ProcessPlayerNamesPacket(message);
+                        break;
+                    case 'C':
+                        ProcessFragsPacket(buffer);
+                        break;
+                    case 'D':
+                        ProcessRemovePacket(message);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch
+            {
+                // Log...
             }
         }
 

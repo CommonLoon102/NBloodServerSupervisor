@@ -26,13 +26,20 @@ namespace Supervisor
 
         private static void RemoveCrashedServers()
         {
-            var crashedServers = State.Servers.Values
-                .Where(s => s.IsStarted && DateTime.UtcNow - s.LastHeartBeatUtc < TimeSpan.FromMinutes(15))
-                .Select(s => s.Port);
-
-            foreach (var port in crashedServers)
+            try
             {
-                State.Servers.TryRemove(port, out _);
+                var crashedServers = State.Servers.Values
+                    .Where(s => s.IsStarted && DateTime.UtcNow - s.LastHeartBeatUtc < TimeSpan.FromMinutes(15))
+                    .Select(s => s.Port);
+
+                foreach (var port in crashedServers)
+                {
+                    State.Servers.TryRemove(port, out _);
+                }
+            }
+            catch
+            {
+                // Log...
             }
         }
     }

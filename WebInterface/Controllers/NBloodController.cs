@@ -58,23 +58,20 @@ namespace WebInterface.Controllers
                 if (parameters.ApiKey != _config.GetValue<string>("ApiKey"))
                     return new StartServerResponse("Invalid ApiKey.");
 
-                string processName = Constants.NBloodExecutable;
-                int serversRunning = Process.GetProcessesByName(processName).Count();
-                if (serversRunning >= _config.GetValue<int>("MaximumServers"))
-                    return new StartServerResponse("The maximum number of servers are already running.");
-
-                Mod mod = GetMod(parameters.ModName);
-                int port = PortUtils.GetPort();
-
-                var process = Process.Start(NBloodServerStartInfo.Get(parameters.Players, port, mod));
-                byte[] payload = Encoding.ASCII.GetBytes($"B{port}\t{process.Id}\0");
+                SpawnedServerInfo serverProcess = ProcessSpawner.SpawnServer(parameters.Players, parameters.ModName);
+                byte[] payload = Encoding.ASCII.GetBytes($"B{serverProcess.Port}\t{serverProcess.Process.Id}\0");
                 socket.SendTo(payload, webApiListenerEndPoint);
 
                 _logger.LogInformation("Server started waiting for {0} players on port {1}.",
-                    parameters.Players, port);
+                    parameters.Players, serverProcess.Port);
 
                 Thread.Sleep(TimeSpan.FromSeconds(2));
-                return new StartServerResponse(port) { CommandLine = CommandLineUtils.GetLaunchCommand(HttpContext.Request.Host.Host, port, mod) };
+                return new StartServerResponse(serverProcess.Port)
+                {
+                    CommandLine = CommandLineUtils.GetClientLaunchCommand(HttpContext.Request.Host.Host,
+                        serverProcess.Port,
+                        serverProcess.Mod.CommandLine)
+                };
             }
             catch (Exception ex)
             {
@@ -107,17 +104,6 @@ namespace WebInterface.Controllers
                 _logger.LogError(ex.ToString());
                 return new ListServersResponse("Unhandled exception has been occured. Check the logs for details.");
             }
-        }
-
-        private Mod GetMod(string modName)
-        {
-            if (string.IsNullOrWhiteSpace(modName))
-                return Constants.SupportedMods["BLOOD"];
-
-            if (!Constants.SupportedMods.ContainsKey(modName.ToUpper()))
-                throw new Exception("This mod is not supported: " + modName);
-
-            return Constants.SupportedMods[modName.ToUpper()];
         }
     }
 }

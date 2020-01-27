@@ -24,15 +24,22 @@ namespace Supervisor
 
         private static void KillUnusedServers()
         {
-            var killables = Program.State.Servers.Values.Where(s => 
-                s.IsPrivate
-                && !s.IsStarted
-                && s.CurrentPlayers < 2
-                && (DateTime.UtcNow - s.SpawnedAtUtc) > TimeSpan.FromMinutes(10));
-
-            foreach (var server in killables)
+            try
             {
-                Process.GetProcessById(server.ProcessId).Kill();
+                var killables = Program.State.Servers.Values.Where(s =>
+                    s.IsPrivate
+                    && !s.IsStarted
+                    && s.CurrentPlayers < 2
+                    && (DateTime.UtcNow - s.SpawnedAtUtc) > TimeSpan.FromMinutes(10));
+
+                foreach (var server in killables)
+                {
+                    Process.GetProcessById(server.ProcessId).Kill();
+                }
+            }
+            catch
+            {
+                //Log...
             }
         }
     }

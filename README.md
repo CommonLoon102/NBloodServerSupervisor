@@ -89,3 +89,5 @@ http://your.ip.goes.here:23580/nblood/api/startserver?players=3&modName=cryptic&
 The number of players must be at least 3 and maximum 8. The servers started with this URL won't be visible publicly via the `listservers` URL.
 The modName parameter can be `cryptic`, `dw`, `fo`, `twoira` or it can be missing.
 You can see the port and the command line command to join in the response.
+
+Port range used: 23580-23700
