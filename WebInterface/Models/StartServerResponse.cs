@@ -18,10 +18,11 @@ namespace WebInterface
             ErrorMessage = errorMessage ?? "";
         }
 
-        public StartServerResponse(int port)
+        public StartServerResponse(int port, string commandLine)
         {
             IsSuccess = true;
             Port = port;
+            CommandLine = commandLine;
         }
     }
 }

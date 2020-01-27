@@ -24,16 +24,18 @@ namespace WebInterface.Controllers
 
         private readonly ILogger<NBloodController> _logger;
         private readonly IConfiguration _config;
-        private readonly IStateService _listServersService;
+        private readonly IStateService _stateService;
+        private readonly IPrivateServerService _privateServerService;
 
-        private static readonly Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-        private static readonly IPEndPoint webApiListenerEndPoint = new IPEndPoint(IPAddress.Loopback, 11028);
-
-        public NBloodController(ILogger<NBloodController> logger, IConfiguration config, IStateService listServersService)
+        public NBloodController(ILogger<NBloodController> logger,
+            IConfiguration config,
+            IStateService stateService,
+            IPrivateServerService privateServerService)
         {
             _logger = logger;
             _config = config;
-            _listServersService = listServersService;
+            _stateService = stateService;
+            _privateServerService = privateServerService;
         }
 
         [HttpGet]
@@ -42,6 +44,9 @@ namespace WebInterface.Controllers
         {
             try
             {
+                if (parameters.ApiKey != _config.GetValue<string>("ApiKey"))
+                    return new StartServerResponse("Invalid ApiKey.");
+
                 Stopwatch sw = Stopwatch.StartNew();
                 while (_isBusy)
                 {
@@ -52,26 +57,16 @@ namespace WebInterface.Controllers
 
                 _isBusy = true;
 
-                if (parameters.Players < 3)
-                    parameters.Players = 3;
-
-                if (parameters.ApiKey != _config.GetValue<string>("ApiKey"))
-                    return new StartServerResponse("Invalid ApiKey.");
-
-                SpawnedServerInfo serverProcess = ProcessSpawner.SpawnServer(parameters.Players, parameters.ModName);
-                byte[] payload = Encoding.ASCII.GetBytes($"B{serverProcess.Port}\t{serverProcess.Process.Id}\0");
-                socket.SendTo(payload, webApiListenerEndPoint);
-
+                var serverProcess = _privateServerService.SpawnNewPrivateServer(parameters.Players, parameters.ModName);
                 _logger.LogInformation("Server started waiting for {0} players on port {1}.",
                     parameters.Players, serverProcess.Port);
 
+                string commandLine = CommandLineUtils.GetClientLaunchCommand(HttpContext.Request.Host.Host,
+                    serverProcess.Port,
+                    serverProcess.Mod.CommandLine);
+
                 Thread.Sleep(TimeSpan.FromSeconds(2));
-                return new StartServerResponse(serverProcess.Port)
-                {
-                    CommandLine = CommandLineUtils.GetClientLaunchCommand(HttpContext.Request.Host.Host,
-                        serverProcess.Port,
-                        serverProcess.Mod.CommandLine)
-                };
+                return new StartServerResponse(serverProcess.Port, commandLine);
             }
             catch (Exception ex)
             {
@@ -93,7 +88,7 @@ namespace WebInterface.Controllers
                 if (DateTime.UtcNow - _lastRefresh > TimeSpan.FromSeconds(1)
                     || _lastServerList == null)
                 {
-                    _lastServerList = _listServersService.ListServers(HttpContext.Request.Host.Host);
+                    _lastServerList = _stateService.ListServers(HttpContext.Request.Host.Host);
                     _lastRefresh = DateTime.UtcNow;
                 }
 
