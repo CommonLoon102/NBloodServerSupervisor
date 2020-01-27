@@ -17,14 +17,16 @@ Web API and NBlood server launcher service in .NET Core
 6. Start `WebInterface.exe`
 7. Attach the debugger to `WebInterface.exe` and/or `Supervisor.exe`
 8. You can call the following URLs with your web browser or Postman:
+- http://localhost:5000/nblood/home
 - http://localhost:5000/nblood/api/listservers
-- http://localhost:5000/nblood/api/startserver?players=3&ApiKey=CHANGEME
+- http://localhost:5000/nblood/api/startserver?players=3&modName=cryptic&apiKey=CHANGEME
 
 ## Deploy the server onto GNU/Linux
 1. Install Docker and wget (if you don't have already), for example like this: `sudo snap install docker && sudo apt install wget -y`
 2. Download the Dockerfile: `wget https://raw.githubusercontent.com/CommonLoon102/NBloodServerSupervisor/master/Dockerfile --directory-prefix=supervisor`
 3. Build the Docker image: `sudo docker build -t nblood-supervisor:latest supervisor`
-4. Navigate to your Blood 1.21 directory where you have the below files. The files are from stock Blood 1.21, Cryptic Passage, Death Wish 1.6.10, The Way of Ira 1.0.1, Fleshed Out 1.3
+4. Navigate to your Blood 1.21 directory where you have the below files.
+The files are from stock Blood 1.21, Cryptic Passage, Death Wish 1.6.10, The Way of Ira 1.0.1, Fleshed Out 1.3
 - BLOOD.INI
 - BLOOD.RFF
 - CP01.MAP-CP09.MAP
@@ -68,12 +70,14 @@ You need a folder in your Blood folder, named `TWOIRA`, and inside that, these f
 - `exit`
 
 ## Usage
-You can list the currently running public servers via this URL:
+User friendly homepage:  
+http://your.ip.goes.here:23580/nblood/home
 
+You can list the currently running public servers via this API:  
 http://your.ip.goes.here:23580/nblood/api/listservers
 
-You can start new private servers via this URL:
-
-http://your.ip.goes.here:23580/nblood/api/startserver?players=3&ApiKey=the_actual_apikey_here
-
-The number of players must be at least 3 and maximum 8. The servers started with this URL won't be visible publicly via the `listservers` URL. You can see the port and the command line command to join in the response.
+You can start new private servers via this API:  
+http://your.ip.goes.here:23580/nblood/api/startserver?players=3&modName=cryptic&apiKey=the_actual_apikey_here  
+The number of players must be at least 3 and maximum 8. The servers started with this URL won't be visible publicly via the `listservers` URL.
+The modName parameter can be `cryptic`, `dw`, `fo`, `twoira` or it can be missing.
+You can see the port and the command line command to join in the response.
