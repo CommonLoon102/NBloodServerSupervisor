@@ -9,17 +9,20 @@ namespace WebInterface.Controllers
 {
     public class HomeController : Controller
     {
-        IListServersService _serversList;
+        IStateService _stateService;
 
-        public HomeController(IListServersService serversList)
+        public HomeController(IStateService stateService)
         {
-            _serversList = serversList;
+            _stateService = stateService;
         }
 
         [Route("nblood/home")]
         public IActionResult Index()
         {
-            var viewModel = _serversList.ListServers(HttpContext.Request.Host.Host).Servers;
+            var servers = _stateService.ListServers(HttpContext.Request.Host.Host).Servers;
+            var stats = _stateService.GetStatistics();
+
+            var viewModel = new HomeViewModel(servers, stats.RunningSinceUtc, stats.ManMinutesPlayed);
             return View(viewModel);
         }
     }

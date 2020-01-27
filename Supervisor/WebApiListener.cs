@@ -47,8 +47,12 @@ namespace Supervisor
 
         private static void ProcessGetCurrentStateRequest()
         {
-            var response = new StateResponse();
-            response.Servers = Program.State.Servers.Values.ToList();
+            StateResponse response = new StateResponse
+            {
+                Servers = Program.State.Servers.Values.ToList(),
+                ManMinutesPlayed = (int)Math.Floor(Program.State.Playtime.TotalMinutes),
+                RunningSinceUtc = Program.State.CreatedAtUtc,
+            };
 
             byte[] serializedResponse = ObjectToByteArray(response);
             socket.SendTo(serializedResponse, webApiEndPoint);

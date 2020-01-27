@@ -39,7 +39,7 @@ namespace WebInterface
         {
             services.AddControllers();
             services.AddControllersWithViews();
-            services.Add(new ServiceDescriptor(typeof(IListServersService), typeof(ListServersService), ServiceLifetime.Singleton));
+            services.Add(new ServiceDescriptor(typeof(IStateService), typeof(StateService), ServiceLifetime.Singleton));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
