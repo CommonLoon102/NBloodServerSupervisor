@@ -1,0 +1,17 @@
+﻿@model StartServerResponse
+@{
+    ViewData["Title"] = "Your Private Server";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="bordered">
+    @if (Model.IsSuccess)
+    {
+        <p>Command: <span class="code">@Model.CommandLine</span></p>
+        <p>You have 10 minutes to join.</p>
+    }
+    else
+    {
+        <p>Error: @Model.ErrorMessage</p>
+    }
+</div>

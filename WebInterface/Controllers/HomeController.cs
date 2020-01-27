@@ -16,7 +16,7 @@ namespace WebInterface.Controllers
             _stateService = stateService;
         }
 
-        [Route("nblood/home")]
+        [Route("nblood/home", Name = "Home")]
         public IActionResult Index()
         {
             var servers = _stateService.ListServers(HttpContext.Request.Host.Host).Servers;

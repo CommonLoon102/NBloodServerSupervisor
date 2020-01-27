@@ -1,10 +1,9 @@
-﻿using Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace Common
+namespace Model
 {
     public class SpawnedServerInfo
     {

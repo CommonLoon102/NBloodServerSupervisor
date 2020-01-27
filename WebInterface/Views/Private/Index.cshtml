@@ -1,0 +1,16 @@
+﻿@model PrivateViewModel
+@{
+    ViewData["Title"] = "Request Private Server";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+<div class="bordered" style="padding:4px">
+    <form method="post">
+        <label asp-for="ModName"></label>
+        <select asp-for="ModName" asp-items="Model.ModNames"></select> <br />
+        <label asp-for="Players"></label>
+        <input type="number" min="2" max="7" asp-for="Players" /> <br />
+        <button asp-route="RequestPrivateServer">Request</button>
+    </form>
+</div>
