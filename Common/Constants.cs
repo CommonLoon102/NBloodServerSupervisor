@@ -7,7 +7,6 @@ namespace Common
 {
     public class Constants
     {
-        public const string NBloodExecutable = "nblood_server";
         public static readonly IReadOnlyDictionary<string, Mod> SupportedMods = new Dictionary<string, Mod>()
         {
             { "BLOOD", new Mod("BLOOD", "Blood", "") },

@@ -31,17 +31,24 @@ namespace Supervisor
 
         private static void ProcessWebApiMessage(byte[] buffer)
         {
-            string message = Encoding.ASCII.GetString(buffer);
-            switch (message[0])
+            try
             {
-                case 'A':
-                    ProcessGetCurrentStateRequest();
-                    break;
-                case 'B':
-                    StorePrivateServerInfo(message);
-                    break;
-                default:
-                    break;
+                string message = Encoding.ASCII.GetString(buffer);
+                switch (message[0])
+                {
+                    case 'A':
+                        ProcessGetCurrentStateRequest();
+                        break;
+                    case 'B':
+                        StorePrivateServerInfo(message);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            catch
+            {
+                // Log...
             }
         }
 

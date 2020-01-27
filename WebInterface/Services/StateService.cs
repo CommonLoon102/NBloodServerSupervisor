@@ -1,4 +1,5 @@
-﻿using Model;
+﻿using Common;
+using Model;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -28,7 +29,7 @@ namespace WebInterface.Services
                 {
                     Port = s.Port,
                     IsStarted = s.IsStarted,
-                    CommandLine = s.CurrentPlayers == s.MaximumPlayers ? "Sorry, the game is already started." : CommandLineUtils.GetLaunchCommand(host, s.Port, s.Mod),
+                    CommandLine = GetCommandLine(s, host),
                     GameType = s.GameType,
                     Mod = s.Mod.FriendlyName,
                     CurrentPlayers = s.CurrentPlayers,
@@ -39,6 +40,14 @@ namespace WebInterface.Services
             };
 
             return serversResponse;
+        }
+
+        public string GetCommandLine(Model.Server server, string host)
+        {
+            if (server.CurrentPlayers == server.MaximumPlayers)
+                return "Sorry, the game is already started.";
+
+            return CommandLineUtils.GetClientLaunchCommand(host, server.Port, server.Mod.CommandLine);
         }
 
         public GetStatisticsResponse GetStatistics()

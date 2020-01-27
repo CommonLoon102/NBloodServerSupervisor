@@ -46,24 +46,33 @@ namespace Supervisor
                 {
                     if (IsNewServerNeeded(i, mod))
                     {
-                        int port = PortUtils.GetPort();
-                        var process = Process.Start(NBloodServerStartInfo.Get(i, port, mod));
-                        Program.State.Servers.AddOrUpdate(port, new Server()
+                        try
                         {
-                            Port = port,
-                            ProcessId = process.Id,
-                            MaximumPlayers = i,
-                            CurrentPlayers = 1,
-                            Mod = mod,
-                        },
-                        (prt, server) =>
+                            var spawnedServer = ProcessSpawner.SpawnServer(i, mod.Name);
+                            int port = spawnedServer.Port;
+                            int processId = spawnedServer.Process.Id;
+                            Program.State.Servers.AddOrUpdate(port, new Server()
+                            {
+                                Port = port,
+                                ProcessId = processId,
+                                MaximumPlayers = i,
+                                CurrentPlayers = 1,
+                                Mod = mod,
+                            },
+                            (prt, server) =>
+                            {
+                                server.ProcessId = processId;
+                                server.MaximumPlayers = i;
+                                server.CurrentPlayers = 1;
+                                server.Mod = mod;
+                                return server;
+                            });
+                        }
+                        catch
                         {
-                            server.ProcessId = process.Id;
-                            server.MaximumPlayers = i;
-                            server.CurrentPlayers = 1;
-                            server.Mod = mod;
-                            return server;
-                        });
+                            // No free ports, cannot create process
+                            // Log...
+                        }
                     }
                 }
             }
