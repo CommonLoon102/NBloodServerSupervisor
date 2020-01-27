@@ -24,12 +24,12 @@ namespace WebInterface.Controllers
 
         private readonly ILogger<NBloodController> _logger;
         private readonly IConfiguration _config;
-        private readonly IListServersService _listServersService;
+        private readonly IStateService _listServersService;
 
         private static readonly Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
         private static readonly IPEndPoint webApiListenerEndPoint = new IPEndPoint(IPAddress.Loopback, 11028);
 
-        public NBloodController(ILogger<NBloodController> logger, IConfiguration config, IListServersService listServersService)
+        public NBloodController(ILogger<NBloodController> logger, IConfiguration config, IStateService listServersService)
         {
             _logger = logger;
             _config = config;

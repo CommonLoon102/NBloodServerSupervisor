@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Model
 {
@@ -8,6 +7,7 @@ namespace Model
     public class Server
     {
         public DateTime SpawnedAtUtc { get; set; } = DateTime.UtcNow;
+        public DateTime? LastCollectionUtc { get; set; }
         public DateTime LastHeartBeatUtc { get; set; }
         public int ProcessId { get; set; }
         public int Port { get; set; }

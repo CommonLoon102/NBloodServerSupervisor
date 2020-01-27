@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace WebInterface.Services
 {
-    public interface IListServersService
+    public interface IStateService
     {
         ListServersResponse ListServers(string host);
+        GetStatisticsResponse GetStatistics();
     }
 }

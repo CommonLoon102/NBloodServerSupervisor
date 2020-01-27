@@ -15,7 +15,8 @@ namespace Supervisor
             WebApiListener.StartListening();
             PublicServerManager.Start();
             PrivateServerManager.Start();
-            
+            StatisticsManager.Start();
+
             while (true)
             {
                 RemoveCrashedServers();
