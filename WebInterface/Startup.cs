@@ -42,6 +42,7 @@ namespace WebInterface
             services.Add(new ServiceDescriptor(typeof(IStateService), typeof(StateService), ServiceLifetime.Singleton));
             services.Add(new ServiceDescriptor(typeof(IPrivateServerService), typeof(PrivateServerService), ServiceLifetime.Transient));
             services.Add(new ServiceDescriptor(typeof(IRateLimiterService), typeof(RateLimiterService), ServiceLifetime.Singleton));
+            services.Add(new ServiceDescriptor(typeof(ICustomMapService), typeof(CustomMapService), ServiceLifetime.Transient));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

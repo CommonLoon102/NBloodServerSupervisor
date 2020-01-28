@@ -1,0 +1,14 @@
+﻿@model List<string>
+@{
+    ViewData["Title"] = "Custom Maps";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>List of available custom maps</h1>
+
+<ul>
+    @foreach (var map in Model)
+    {
+        <li><a href="@Url.Link("DownloadCustomMap", new { map = map })">@map</a></li>
+    }
+</ul>

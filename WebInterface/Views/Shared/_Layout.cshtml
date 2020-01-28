@@ -35,8 +35,13 @@
 <body style="background-color: cornsilk">
     <div class="main">
         <header>
+            <div style="float: left; margin-right: 1em;">
+                <form method="get">
+                    <button asp-route="Home">Home</button>
+                </form>
+            </div>
             <form method="get">
-                <button asp-route="Home">Home</button>
+                <button asp-route="CustomMaps">Custom Maps</button>
             </form>
             <hr />
             <p>I live... Again!</p>
