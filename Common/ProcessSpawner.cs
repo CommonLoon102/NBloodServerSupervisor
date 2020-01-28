@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Linq;
@@ -18,7 +16,6 @@ namespace Common
         private const int maximumServers = 80;
         private const string nBloodExecutable = "nblood_server";
 
-        private static readonly string workingDir = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "blood");
         private static readonly Random rnd = new Random();
 
         public static SpawnedServerInfo SpawnServer(int players, string modName)
@@ -67,7 +64,7 @@ namespace Common
             var psi = new ProcessStartInfo(GetExecutableName(), $"-server {maxPlayers} -port {port} -pname Server {mod.CommandLine}")
             {
                 UseShellExecute = true,
-                WorkingDirectory = workingDir
+                WorkingDirectory = CommandLineUtils.BloodDir
             };
 
             return psi;
