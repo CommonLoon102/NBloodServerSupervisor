@@ -15,6 +15,6 @@
 <ul>
     @foreach (var map in Model)
     {
-        <li><a href="@Url.Link("DownloadCustomMap", new { map = map })">@map</a></li>
+        <li><a href="@Url.Action("Index", "CustomMaps", new { map = map })">@map</a></li>
     }
 </ul>

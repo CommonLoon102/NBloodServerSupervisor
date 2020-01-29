@@ -29,10 +29,11 @@ namespace WebInterface.Services
             "CPBB04.MAP",
         };
 
-        private List<string> ListableCustomMaps => Directory.GetFiles(CommandLineUtils.BloodDir,
-            "*.map", SearchOption.TopDirectoryOnly)
+        private List<string> ListableCustomMaps => Directory.GetFiles(CommandLineUtils.BloodDir)
             .Select(m => Path.GetFileName(m))
+            .Where(m => m.ToUpper().EndsWith(".MAP"))
             .Where(m => !ContainsString(crypticMaps, m))
+            .OrderBy(m => m)
             .ToList();
 
         public IList<string> ListCustomMaps() => ListableCustomMaps;
@@ -57,7 +58,7 @@ namespace WebInterface.Services
 
         public string StoreTempCustomMap(IFormFile formFile)
         {
-            string filename = Path.GetFileNameWithoutExtension(formFile.FileName);
+            string filename = Path.GetFileName(formFile.FileName);
             ValidateFilename(filename);
 
             string tempFolderName = Path.GetRandomFileName();
@@ -65,7 +66,7 @@ namespace WebInterface.Services
             if (!Directory.Exists(mapPath))
                 Directory.CreateDirectory(mapPath);
 
-            mapPath = Path.Combine(mapPath, filename + ".map");
+            mapPath = Path.Combine(mapPath, filename);
             FileStream fs = new FileStream(mapPath, FileMode.CreateNew);
             formFile.CopyTo(fs);
 
@@ -75,9 +76,12 @@ namespace WebInterface.Services
         private void ValidateFilename(string filename)
         {
             if (string.IsNullOrWhiteSpace(filename))
-                throw new WebInterfaceException("Invalid filename.");
+                throw new WebInterfaceException("Invalid file name.");
 
-            if (ContainsString(crypticMaps, filename + ".map"))
+            if (!filename.ToUpper().EndsWith(".MAP"))
+                throw new WebInterfaceException("Invalid extension.");
+
+            if (ContainsString(crypticMaps, filename))
                 throw new WebInterfaceException($"You cannot play this map ({filename}) as a custom map.");
 
             foreach (var chr in Path.GetInvalidFileNameChars())
