@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using WebInterface.Infrastructure;
 
 namespace WebInterface.Services
 {
@@ -28,7 +29,7 @@ namespace WebInterface.Services
             "CPBB04.MAP",
         };
 
-        private List<string> ListableCustomMaps => Directory.GetFiles(Common.CommandLineUtils.BloodDir,
+        private List<string> ListableCustomMaps => Directory.GetFiles(CommandLineUtils.BloodDir,
             "*.map", SearchOption.TopDirectoryOnly)
             .Select(m => Path.GetFileName(m))
             .Where(m => !ContainsString(crypticMaps, m))
@@ -40,11 +41,11 @@ namespace WebInterface.Services
         {
             if (ListableCustomMaps.Any(m => StringsAreSame(m, map)))
             {
-                return File.ReadAllBytes(Path.Combine(Common.CommandLineUtils.BloodDir, map));
+                return File.ReadAllBytes(Path.Combine(CommandLineUtils.BloodDir, map));
             }
             else
             {
-                throw new Exception($"Cannot download this map: {map}");
+                throw new WebInterfaceException($"Cannot download this map: {map}");
             }
         }
 
@@ -74,15 +75,15 @@ namespace WebInterface.Services
         private void ValidateFilename(string filename)
         {
             if (string.IsNullOrWhiteSpace(filename))
-                throw new Exception("Invalid filename");
+                throw new WebInterfaceException("Invalid filename");
 
             if (ContainsString(crypticMaps, filename + ".map"))
-                throw new Exception($"You cannot play this map ({filename}) as a custom map.");
+                throw new WebInterfaceException($"You cannot play this map ({filename}) as a custom map.");
 
             foreach (var chr in Path.GetInvalidFileNameChars())
             {
                 if (filename.Contains(chr))
-                    throw new Exception("Invalid characters in the file name of the custom map.");
+                    throw new WebInterfaceException("Invalid characters in the file name of the custom map.");
             }
         }
     }

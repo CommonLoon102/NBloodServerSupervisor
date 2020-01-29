@@ -18,6 +18,8 @@ namespace WebInterface.Controllers
     [ApiController]
     public class NBloodController : ControllerBase
     {
+        private const string generalErrorMessage = "Unhandled exception has been occured. Check the server logs for details.";
+
         private static bool _isBusy = false;
         private static DateTime _lastRefresh = DateTime.MinValue;
         private static ListServersResponse _lastServerList = null;
@@ -71,7 +73,7 @@ namespace WebInterface.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex.ToString());
-                return new StartServerResponse("Unhandled exception has been occured. Check the logs for details.");
+                return new StartServerResponse(generalErrorMessage);
             }
             finally
             {
@@ -97,7 +99,7 @@ namespace WebInterface.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex.ToString());
-                return new ListServersResponse("Unhandled exception has been occured. Check the logs for details.");
+                return new ListServersResponse(generalErrorMessage);
             }
         }
     }
