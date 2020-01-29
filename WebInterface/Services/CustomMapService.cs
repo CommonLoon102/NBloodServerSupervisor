@@ -33,6 +33,7 @@ namespace WebInterface.Services
             .Select(m => Path.GetFileName(m))
             .Where(m => m.ToUpper().EndsWith(".MAP"))
             .Where(m => !ContainsString(crypticMaps, m))
+            .OrderBy(m => m)
             .ToList();
 
         public IList<string> ListCustomMaps() => ListableCustomMaps;
