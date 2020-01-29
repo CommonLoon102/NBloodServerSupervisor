@@ -3,8 +3,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using Common;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -43,6 +46,29 @@ namespace WebInterface
             services.Add(new ServiceDescriptor(typeof(IPrivateServerService), typeof(PrivateServerService), ServiceLifetime.Transient));
             services.Add(new ServiceDescriptor(typeof(IRateLimiterService), typeof(RateLimiterService), ServiceLifetime.Singleton));
             services.Add(new ServiceDescriptor(typeof(ICustomMapService), typeof(CustomMapService), ServiceLifetime.Transient));
+
+            services.Configure<FormOptions>(options =>
+            {
+                // Set the limit to 1 MB
+                options.MultipartBodyLengthLimit = Constants.FileSizeLimit;
+            });
+
+            services.AddRazorPages()
+                .AddRazorPagesOptions(options =>
+                {
+                    options.Conventions
+                        .AddPageApplicationModelConvention("/nblood/private", model =>
+                        {
+                            model.Filters.Add(
+                                new RequestFormLimitsAttribute()
+                                {
+                                    // Set the limit to 1 MB
+                                    MultipartBodyLengthLimit = Constants.FileSizeLimit
+                                });
+                            model.Filters.Add(
+                                new RequestSizeLimitAttribute(Constants.FileSizeLimit));
+                        });
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Common;
+using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -51,5 +53,37 @@ namespace WebInterface.Services
 
         private bool StringsAreSame(string left, string right) =>
             string.Compare(left, right, StringComparison.OrdinalIgnoreCase) == 0;
+
+        public string StoreTempCustomMap(IFormFile formFile)
+        {
+            string filename = Path.GetFileNameWithoutExtension(formFile.FileName);
+            ValidateFilename(filename);
+
+            string tempFolderName = Path.GetRandomFileName();
+            string mapPath = Path.Combine(CommandLineUtils.TempMapDir, tempFolderName);
+            if (!Directory.Exists(mapPath))
+                Directory.CreateDirectory(mapPath);
+
+            mapPath = Path.Combine(mapPath, filename + ".map");
+            FileStream fs = new FileStream(mapPath, FileMode.CreateNew);
+            formFile.CopyTo(fs);
+
+            return tempFolderName;
+        }
+
+        private void ValidateFilename(string filename)
+        {
+            if (string.IsNullOrWhiteSpace(filename))
+                throw new Exception("Invalid filename");
+
+            if (ContainsString(crypticMaps, filename + ".map"))
+                throw new Exception($"You cannot play this map ({filename}) as a custom map.");
+
+            foreach (var chr in Path.GetInvalidFileNameChars())
+            {
+                if (filename.Contains(chr))
+                    throw new Exception("Invalid characters in the file name of the custom map.");
+            }
+        }
     }
 }
