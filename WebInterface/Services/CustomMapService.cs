@@ -45,7 +45,7 @@ namespace WebInterface.Services
             }
             else
             {
-                throw new WebInterfaceException($"Cannot download this map: {map}");
+                throw new WebInterfaceException($"Cannot download this map: {map}.");
             }
         }
 
@@ -75,7 +75,7 @@ namespace WebInterface.Services
         private void ValidateFilename(string filename)
         {
             if (string.IsNullOrWhiteSpace(filename))
-                throw new WebInterfaceException("Invalid filename");
+                throw new WebInterfaceException("Invalid filename.");
 
             if (ContainsString(crypticMaps, filename + ".map"))
                 throw new WebInterfaceException($"You cannot play this map ({filename}) as a custom map.");

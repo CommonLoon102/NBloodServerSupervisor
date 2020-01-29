@@ -31,7 +31,7 @@ namespace WebInterface
                 supervisor += ".exe";
             string supervisorPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), supervisor);
             if (!File.Exists(supervisorPath))
-                throw new Exception($"Couldn't find {supervisor} at {supervisorPath}");
+                throw new Exception($"Couldn't find {supervisor} at {supervisorPath}.");
             Process.Start(supervisorPath);
         }
 

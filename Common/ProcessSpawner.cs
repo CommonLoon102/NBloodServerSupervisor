@@ -38,7 +38,7 @@ namespace Common
                 return Constants.SupportedMods["BLOOD"];
 
             if (!Constants.SupportedMods.ContainsKey(modName.ToUpper()))
-                throw new Exception("This mod is not supported: " + modName);
+                throw new Exception($"This mod is not supported: {modName}.");
 
             return Constants.SupportedMods[modName.ToUpper()];
         }
