@@ -64,7 +64,7 @@ RUN git clone https://github.com/CommonLoon102/NBlood.git
 
 # Build NBlood
 RUN cd NBlood \
-    && git checkout gnorender \
+    && git checkout norender \
     && make blood NORENDER=1
 
 # Install and configure nginx
