@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.IO;
+using Common;
 
 namespace Supervisor
 {
@@ -16,7 +18,8 @@ namespace Supervisor
             {
                 while (true)
                 {
-                    Thread.Sleep(TimeSpan.FromSeconds(2));
+                    TempMapFolderCleanup();
+                    Thread.Sleep(TimeSpan.FromSeconds(10));
                     KillUnusedServers();
                 }
             });
@@ -39,7 +42,30 @@ namespace Supervisor
             }
             catch
             {
-                //Log...
+                // Log...
+            }
+        }
+
+        private static void TempMapFolderCleanup()
+        {
+            try
+            {
+                if (!Directory.Exists(CommandLineUtils.TempMapDir))
+                {
+                    Directory.CreateDirectory(CommandLineUtils.TempMapDir);
+                }
+
+                foreach (var dir in Directory.GetDirectories(CommandLineUtils.TempMapDir))
+                {
+                    if (DateTime.UtcNow - File.GetCreationTimeUtc(dir) > TimeSpan.FromDays(1))
+                    {
+                        Directory.Delete(dir, recursive: true);
+                    }
+                }
+            }
+            catch
+            {
+                // Log...
             }
         }
     }

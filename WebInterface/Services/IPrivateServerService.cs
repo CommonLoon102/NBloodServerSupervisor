@@ -8,6 +8,6 @@ namespace WebInterface.Services
 {
     public interface IPrivateServerService
     {
-        SpawnedServerInfo SpawnNewPrivateServer(int players, string modName);
+        SpawnedServerInfo SpawnNewPrivateServer(int players, string modName, string tempFolderName = "");
     }
 }

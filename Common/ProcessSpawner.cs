@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.IO;
 
 namespace Common
 {
@@ -18,7 +19,7 @@ namespace Common
 
         private static readonly Random rnd = new Random();
 
-        public static SpawnedServerInfo SpawnServer(int players, string modName)
+        public static SpawnedServerInfo SpawnServer(int players, string modName, string tempFolderName = "")
         {
             int serversRunning = Process.GetProcessesByName(nBloodExecutable).Count();
             if (serversRunning >= maximumServers)
@@ -27,7 +28,7 @@ namespace Common
             Mod mod = GetModByName(modName);
             int port = GetPort();
 
-            var process = Process.Start(GetProcessStartInfo(players, port, mod));
+            var process = Process.Start(GetProcessStartInfo(players, port, mod, tempFolderName));
             return new SpawnedServerInfo(process, port, mod);
         }
 
@@ -37,7 +38,7 @@ namespace Common
                 return Constants.SupportedMods["BLOOD"];
 
             if (!Constants.SupportedMods.ContainsKey(modName.ToUpper()))
-                throw new Exception("This mod is not supported: " + modName);
+                throw new Exception($"This mod is not supported: {modName}.");
 
             return Constants.SupportedMods[modName.ToUpper()];
         }
@@ -59,15 +60,29 @@ namespace Common
             return port;
         }
 
-        private static ProcessStartInfo GetProcessStartInfo(int maxPlayers, int port, Mod mod)
+        private static ProcessStartInfo GetProcessStartInfo(int maxPlayers, int port, Mod mod, string tempFolderName = "")
         {
-            var psi = new ProcessStartInfo(GetExecutableName(), $"-server {maxPlayers} -port {port} -pname Server {mod.CommandLine}")
+            string cmd = GetCommand(maxPlayers, port, mod, tempFolderName);
+
+            var psi = new ProcessStartInfo(GetExecutableName(), cmd)
             {
                 UseShellExecute = true,
                 WorkingDirectory = CommandLineUtils.BloodDir
             };
 
             return psi;
+        }
+
+        private static string GetCommand(int maxPlayers, int port, Mod mod, string tempFolderName)
+        {
+            string cmd = $"-server {maxPlayers} -port {port} -pname Server {mod.CommandLine}";
+            if (!string.IsNullOrWhiteSpace(tempFolderName))
+            {
+                string tempFolderPath = Path.Combine(CommandLineUtils.TempMapDir, tempFolderName);
+                cmd += $" -j={tempFolderPath}";
+            }
+
+            return cmd;
         }
 
         private static string GetExecutableName()

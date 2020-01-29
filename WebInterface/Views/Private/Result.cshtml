@@ -8,7 +8,8 @@
     @if (Model.IsSuccess)
     {
         <p>Command: <span class="code">@Model.CommandLine</span></p>
-        <p>You have 10 minutes to join.</p>
+        <p>At least 1 person must join in 10 minutes, otherwise the server will be killed.</p>
+        <p>If you have provided a custom map, you have to type its name in the user map section when starting a new game.</p>
     }
     else
     {

@@ -7,6 +7,8 @@ namespace Common
 {
     public class Constants
     {
+        public const long FileSizeLimit = 1024 * 1024;
+
         public static readonly IReadOnlyDictionary<string, Mod> SupportedMods = new Dictionary<string, Mod>()
         {
             { "BLOOD", new Mod("BLOOD", "Blood", "") },

@@ -6,11 +6,33 @@
 
 <h1>@ViewData["Title"]</h1>
 <div class="bordered" style="padding:4px">
-    <form method="post">
-        <label asp-for="ModName"></label>
-        <select asp-for="ModName" asp-items="Model.ModNames"></select> <br />
-        <label asp-for="Players"></label>
-        <input type="number" min="2" max="7" asp-for="Players" /> <br />
+    <form enctype="multipart/form-data" method="post">
+        <dl>
+            <dt>
+                <label asp-for="ModName"></label>
+            </dt>
+            <dd>
+                <select asp-for="ModName" asp-items="Model.ModNames"></select>
+            </dd>
+        </dl>
+
+        <dl>
+            <dt>
+                <label asp-for="Players"></label>
+            </dt>
+            <dd>
+                <input type="number" min="2" max="7" asp-for="Players" />
+            </dd>
+        </dl>
+
+        <dl>
+            <dt>
+                <label asp-for="FormFile"></label>
+            </dt>
+            <dd>
+                <input asp-for="FormFile" type="file" accept=".map">
+            </dd>
+        </dl>
         <button asp-route="RequestPrivateServer">Request</button>
     </form>
 </div>
