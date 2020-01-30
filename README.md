@@ -88,5 +88,5 @@ The number of players must be at least 3 and maximum 8. The servers started with
 The modName parameter can be `cryptic`, `dw` and `twoira` or it can be missing.
 You can see the port and the command line command to join in the response.
 
-Port range used: 23580-23700
+Port range used: 23580-23700  
 If you want to run the website on other port than 23580, then you can change this number to whatever else you like in the `Dockerfile`.
