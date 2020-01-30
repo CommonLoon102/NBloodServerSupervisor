@@ -14,7 +14,6 @@ namespace Common
             { "BLOOD", new Mod("BLOOD", "Blood", "") },
             { "CRYPTIC", new Mod("CRYPTIC", "Cryptic Passage", "-ini CRYPTIC.INI") },
             { "DW", new Mod("DW", "Death Wish", "-ini dw.ini") },
-            { "FO", new Mod("FO", "Fleshed Out", "-ini fo.ini") },
             { "TWOIRA", new Mod("TWOIRA", "The Way of Ira", "-ini TWOIRA/twoira.ini -j=TWOIRA") },
         };
     }
