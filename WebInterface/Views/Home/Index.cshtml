@@ -40,10 +40,33 @@
     </div>;
 }
 
-<h1>The client EXE</h1>
-<p>Use this exe to connect: <a href="https://lerppu.net/wannabethesis/nblood/20200130-2151/">https://lerppu.net/wannabethesis/nblood/20200130-2151/</a></p>
+<h1>Welcome Bloodites!</h1>
+<div class="bordered">
+    <p>Use this exe to connect: <a href="https://lerppu.net/wannabethesis/nblood/20200130-2151/">https://lerppu.net/wannabethesis/nblood/20200130-2151/</a></p>
+</div>
+<div id="for-noobs" class="bordered">
+    <p>
+        What to do with the <span class="code">command to join</span>?
+        Select and copy it to clipboard then paste it into the command line what you have opened in NBlood's directory.
+        Here is how to open a command prompt in NBlood's directory easily:
+    </p>
+    @*<iframe width="400"
+                height="226"
+                src="https://www.youtube.com/embed/bgSSJQolR0E?start=47"
+                frameborder="1"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+        </iframe>*@
+    <video width="400" height="226" controls>
+        <source src="~/cp.mp4" type="video/mp4">
+        <a href="https://www.invidio.us/latest_version?id=bgSSJQolR0E&itag=22" target="_blank" rel="nofollow noreferrer noopener">Video tutorial about how to open the command prompt.</a>
+    </video>
+    <p>Watch it on Youtube: <a href="https://youtu.be/bgSSJQolR0E?t=47" target="_blank" rel="nofollow noreferrer noopener">https://youtu.be/bgSSJQolR0E?t=47</a></p>
+</div>
 
-<p><span class="bolder" style="font-size:larger">@Model.ManHoursPlayed</span> man-hours played since @Model.RunningSinceUtc</p>
+<div class="bordered">
+    <p><span class="bolder" style="font-size:larger">@Model.ManHoursPlayed</span> man-hours played since @Model.RunningSinceUtc</p>
+</div>
 
 <div class="bordered" style="padding-left:1em;padding-bottom:1em">
     <p>If you want to play with friends only and keep your port secret, request a private server by clicking the button below:</p>
@@ -52,75 +75,77 @@
     </form>
 </div>
 
-<h2>@b 1.21</h2>
-<details>
-    <summary>Show @b <span class="bolder">version 1.21</span> servers</summary>
-    <p>The below files must be in your Blood directory:</p>
-    <ul>
-        <li>BLOOD.INI</li>
-        <li>BLOOD.RFF</li>
-        <li>GUI.RFF</li>
-        <li>SOUNDS.RFF</li>
-        <li>SURFACE.DAT</li>
-        <li>TILES000.ART-TILES017.ART</li>
-        <li>VOXEL.DAT</li>
-    </ul>
-    @ListServers(@b)
-</details>
-<br />
-<h2>@cp</h2>
-<details>
-    <summary>Show @cp servers</summary>
-    <p>The below files must be in your Blood directory:</p>
-    <ul>
-        <li>CP01-CP09.MAP</li>
-        <li>CPART07.AR_ (Fresh Supply owners need to copy tiles007.ART from <span class="code">\addons\Cryptic Passage</span> and rename it</li>
-        <li>CPART15.AR_ (Fresh Supply owners need to copy tiles015.ART from <span class="code">\addons\Cryptic Passage</span> and rename it</li>
-        <li>CPBB01.MAP-CPBB04.MAP</li>
-        <li>CPSL.MAP</li>
-        <li>CRYPTIC.INI</li>
-    </ul>
-    <p class="warning">Don't forget to send back the ferry every time at the end of the last map, otherwise you cannot go back if the boss kills you!</p>
-    @ListServers(@cp)
-</details>
-<br />
-<h2>@dw 1.6.10</h2>
-<details>
-    <summary>Show @dw <span class="bolder">version 1.6.10</span> servers</summary>
-    <p>The below files must be in your Blood directory:</p>
-    <ul>
-        <li>dw.ini</li>
-        <li>DWBB1.MAP-DWBB3.MAP</li>
-        <li>DWE1M1.MAP-DWE1M12.MAP</li>
-        <li>DWE2M1.MAP-DWE2M12.MAP</li>
-        <li>DWE3M1.MAP-DWE3M12.MAP</li>
-    </ul>
-    @ListServers(@dw)
-</details>
-<br />
-<h2>@twoira 1.0.1</h2>
-<details>
-    <summary>Show @twoira <span class="bolder">version 1.0.1</span> servers</summary>
-    <p>@twoira </p>
-    <p>The below folder (TWOIRA) must be in your Blood directory, and inside that the other additional files:</p>
-    <ul>
-        <li>TWOIRA</li>
-        <li>
-            <ul>
-                <li>IRA01.MAP</li>
-                <li>IRA02_A.MAP</li>
-                <li>IRA02_B.MAP</li>
-                <li>IRA03.MAP</li>
-                <li>IRA04.MAP</li>
-                <li>IRA05.MAP</li>
-                <li>IRA06.MAP</li>
-                <li>IRA07.MAP</li>
-                <li>IRA08.MAP</li>
-                <li>SURFACE.DAT</li>
-                <li>TILES18.ART</li>
-                <li>twoira.ini</li>
-            </ul>
-        </li>
-    </ul>
-    @ListServers(twoira)
-</details>
+<div style="margin:1em">
+    <h2>@b 1.21</h2>
+    <details>
+        <summary>Show @b <span class="bolder">version 1.21</span> servers</summary>
+        <p>The below files must be in your Blood directory:</p>
+        <ul>
+            <li>BLOOD.INI</li>
+            <li>BLOOD.RFF</li>
+            <li>GUI.RFF</li>
+            <li>SOUNDS.RFF</li>
+            <li>SURFACE.DAT</li>
+            <li>TILES000.ART-TILES017.ART</li>
+            <li>VOXEL.DAT</li>
+        </ul>
+        @ListServers(@b)
+    </details>
+    <br />
+    <h2>@cp</h2>
+    <details>
+        <summary>Show @cp servers</summary>
+        <p>The below files must be in your Blood directory:</p>
+        <ul>
+            <li>CP01-CP09.MAP</li>
+            <li>CPART07.AR_ (Fresh Supply owners need to copy tiles007.ART from <span class="code">\addons\Cryptic Passage</span> and rename it</li>
+            <li>CPART15.AR_ (Fresh Supply owners need to copy tiles015.ART from <span class="code">\addons\Cryptic Passage</span> and rename it</li>
+            <li>CPBB01.MAP-CPBB04.MAP</li>
+            <li>CPSL.MAP</li>
+            <li>CRYPTIC.INI</li>
+        </ul>
+        <p class="warning">Don't forget to send back the ferry every time at the end of the last map, otherwise you cannot go back if the boss kills you!</p>
+        @ListServers(@cp)
+    </details>
+    <br />
+    <h2>@dw 1.6.10</h2>
+    <details>
+        <summary>Show @dw <span class="bolder">version 1.6.10</span> servers</summary>
+        <p>The below files must be in your Blood directory:</p>
+        <ul>
+            <li>dw.ini</li>
+            <li>DWBB1.MAP-DWBB3.MAP</li>
+            <li>DWE1M1.MAP-DWE1M12.MAP</li>
+            <li>DWE2M1.MAP-DWE2M12.MAP</li>
+            <li>DWE3M1.MAP-DWE3M12.MAP</li>
+        </ul>
+        @ListServers(@dw)
+    </details>
+    <br />
+    <h2>@twoira 1.0.1</h2>
+    <details>
+        <summary>Show @twoira <span class="bolder">version 1.0.1</span> servers</summary>
+        <p>@twoira </p>
+        <p>The below folder (TWOIRA) must be in your Blood directory, and inside that the other additional files:</p>
+        <ul>
+            <li>TWOIRA</li>
+            <li>
+                <ul>
+                    <li>IRA01.MAP</li>
+                    <li>IRA02_A.MAP</li>
+                    <li>IRA02_B.MAP</li>
+                    <li>IRA03.MAP</li>
+                    <li>IRA04.MAP</li>
+                    <li>IRA05.MAP</li>
+                    <li>IRA06.MAP</li>
+                    <li>IRA07.MAP</li>
+                    <li>IRA08.MAP</li>
+                    <li>SURFACE.DAT</li>
+                    <li>TILES18.ART</li>
+                    <li>twoira.ini</li>
+                </ul>
+            </li>
+        </ul>
+        @ListServers(twoira)
+    </details>
+</div>

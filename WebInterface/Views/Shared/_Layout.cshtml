@@ -12,7 +12,8 @@
         }
 
         .warning {
-            border: dashed 4px red;
+            border: dashed 0.25em red;
+            padding: 1em;
             font-weight: bold;
         }
 
@@ -23,28 +24,39 @@
         .main {
             margin: auto;
             max-width: 900px;
-            padding: 10px;
+            padding: 1em;
         }
 
         .bordered {
-            border: 2px solid cornflowerblue;
+            border: 0.25em solid cornflowerblue;
             padding-left: 1em;
+            margin: 1em;
+        }
+
+        .crumb-button {
+            float: left;
+            margin-right: 1em;
         }
     </style>
 </head>
 <body style="background-color: cornsilk">
     <div class="main">
         <header>
-            <div style="float: left; margin-right: 1em;">
+            <div class="crumb-button">
                 <form method="get">
                     <button asp-route="Home">Home</button>
                 </form>
             </div>
+            <div class="crumb-button">
+                <form method="get">
+                    <button asp-route="CustomMaps">Custom Maps</button>
+                </form>
+            </div>
             <form method="get">
-                <button asp-route="CustomMaps">Custom Maps</button>
+                <button asp-route="RequestPrivateServer">Private Server</button>
             </form>
             <hr />
-            <p>I live... Again!</p>
+            <p style="font-style:italic">I live... Again!</p>
         </header>
 
         <div>
