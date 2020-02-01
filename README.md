@@ -34,7 +34,7 @@ After you start the container, the following will happen:
 2. Download the Dockerfile: `wget https://raw.githubusercontent.com/CommonLoon102/NBloodServerSupervisor/master/Dockerfile --directory-prefix=supervisor`
 3. Build the Docker image: `sudo docker build --build-arg CACHEBUST=$(date +%s) -t nblood-supervisor:latest supervisor`
 4. Navigate to your Blood 1.21 directory where you have the below files.
-The files are from stock Blood 1.21, Cryptic Passage, Death Wish 1.6.10 and The Way of Ira 1.0.1
+The files are from stock Blood 1.21, Cryptic Passage, Death Wish 1.6.10 and The Way of Ira 1.0.2.4
 - BLOOD.INI
 - BLOOD.RFF
 - CP01.MAP-CP09.MAP
@@ -52,10 +52,12 @@ The files are from stock Blood 1.21, Cryptic Passage, Death Wish 1.6.10 and The 
 - SOUNDS.RFF
 - SURFACE.DAT
 - TILES000.ART-TILES017.ART
-- TWOIRA (folder, see below)
+- IRA (folder, see below)
 - VOXEL.DAT
 
-You need a folder in your Blood folder, named `TWOIRA`, and inside that, these files:
+You need a folder in your Blood folder, named `IRA`, and inside that, these files:
+- WD (folder, see below)
+- ira.ini
 - IRA01.MAP
 - IRA02_A.MAP
 - IRA02_B.MAP
@@ -66,8 +68,12 @@ You need a folder in your Blood folder, named `TWOIRA`, and inside that, these f
 - IRA07.MAP
 - IRA08.MAP
 - SURFACE.DAT
-- TILES18.ART
-- twoira.ini
+- VOXEL.DAT
+
+Inside `WD`:
+ - BLOOD.RFF
+ - IRA000.ART-IRA018.ART
+ - SOUNDS.RFF
 
 5. Run a Docker container from there: `sudo docker run --volume "$PWD":/supervisor/publish/blood --network=host --detach nblood-supervisor`
 6. Optional: You can see the ApiKey here:
