@@ -47,7 +47,7 @@ RUN apt-get update \
         libsdl2-mixer-dev \
         nano \
         nasm \
-        nginx
+        nginx \
     && rm -rf /var/lib/apt/lists/*
 
 # Installing the NBlood supervisor related things
