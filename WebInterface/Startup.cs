@@ -45,6 +45,7 @@ namespace WebInterface
             services.Add(new ServiceDescriptor(typeof(IStateService), typeof(StateService), ServiceLifetime.Singleton));
             services.Add(new ServiceDescriptor(typeof(IPrivateServerService), typeof(PrivateServerService), ServiceLifetime.Transient));
             services.Add(new ServiceDescriptor(typeof(IRateLimiterService), typeof(RateLimiterService), ServiceLifetime.Singleton));
+            services.Add(new ServiceDescriptor(typeof(ITorCheckService), typeof(TorCheckService), ServiceLifetime.Singleton));
             services.Add(new ServiceDescriptor(typeof(ICustomMapService), typeof(CustomMapService), ServiceLifetime.Transient));
 
             services.Configure<FormOptions>(options =>

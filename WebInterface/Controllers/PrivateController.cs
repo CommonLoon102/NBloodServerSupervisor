@@ -13,16 +13,19 @@ namespace WebInterface.Controllers
     {
         private readonly IPrivateServerService _privateServerService;
         private readonly IRateLimiterService _rateLimiterService;
+        private readonly ITorCheckService _torCheckService;
         private readonly ICustomMapService _customMapService;
         private readonly ILogger<PrivateController> _logger;
 
         public PrivateController(IPrivateServerService privateServerService,
             IRateLimiterService rateLimiterService,
+            ITorCheckService torCheckService,
             ICustomMapService customMapService,
             ILogger<PrivateController> logger)
         {
             _privateServerService = privateServerService;
             _rateLimiterService = rateLimiterService;
+            _torCheckService = torCheckService;
             _customMapService = customMapService;
             _logger = logger;
         }
@@ -50,6 +53,9 @@ namespace WebInterface.Controllers
             {
                 if (!ModelState.IsValid)
                     throw new WebInterfaceException("Something went off the rails.");
+
+                if (_torCheckService.IsTorExit(HttpContext.Connection.RemoteIpAddress))
+                    throw new WebInterfaceException("Requesting private servers through Tor is not allowed.");
 
                 if (!_rateLimiterService.IsRequestAllowed(HttpContext.Connection.RemoteIpAddress))
                     throw new WebInterfaceException("Sorry, you have requested too many servers recently, you need to wait some time.");
