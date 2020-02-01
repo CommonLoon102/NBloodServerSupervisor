@@ -32,7 +32,7 @@ After you start the container, the following will happen:
 ## Deploy the server onto GNU/Linux
 1. Install Docker and wget (if you don't have already), for example like this: `sudo snap install docker && sudo apt install wget -y`
 2. Download the Dockerfile: `wget https://raw.githubusercontent.com/CommonLoon102/NBloodServerSupervisor/master/Dockerfile --directory-prefix=supervisor`
-3. Build the Docker image: `sudo docker build --no-cache -t nblood-supervisor:latest supervisor`
+3. Build the Docker image: `sudo docker build --build-arg CACHEBUST=$(date +%s) -t nblood-supervisor:latest supervisor`
 4. Navigate to your Blood 1.21 directory where you have the below files.
 The files are from stock Blood 1.21, Cryptic Passage, Death Wish 1.6.10 and The Way of Ira 1.0.1
 - BLOOD.INI

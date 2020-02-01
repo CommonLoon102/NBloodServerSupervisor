@@ -34,12 +34,28 @@ RUN dotnet_sdk_version=3.1.101 \
     # Trigger first run experience by running arbitrary cmd
     && dotnet help
 
+# Install toolchain to build NBlood and the supervisor
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        build-essential \
+        git \
+        libgl1-mesa-dev \
+        libglu1-mesa-dev \
+        libsdl-mixer1.2-dev \
+        libsdl1.2-dev \
+        libsdl2-dev \
+        libsdl2-mixer-dev \
+        nano \
+        nasm \
+        nginx \
+    && rm -rf /var/lib/apt/lists/*
+
 # Installing the NBlood supervisor related things
 WORKDIR /supervisor
 RUN mkdir -p publish/blood
-RUN apt-get update && apt-get install -y \
-    git \
-    nano
+
+# Disable cache from this point
+ARG CACHEBUST
 
 # Clone NBloodServerSupervisor
 RUN git clone https://github.com/CommonLoon102/NBloodServerSupervisor.git
@@ -47,17 +63,6 @@ RUN git clone https://github.com/CommonLoon102/NBloodServerSupervisor.git
 # Build NBloodServerSupervisor
 RUN dotnet publish NBloodServerSupervisor/NBloodServerSupervisor.sln --configuration Release --output publish --self-contained false --runtime linux-x64 \
     && sed -i -e "s/CHANGEME/$(< /dev/urandom tr -dc A-Za-z0-9 | head -c${1:-32};echo;)/g" publish/appsettings.json
-
-# Install toolchain to build NBlood
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libgl1-mesa-dev \
-    libglu1-mesa-dev \
-    libsdl-mixer1.2-dev \
-    libsdl1.2-dev \
-    libsdl2-dev \
-    libsdl2-mixer-dev \
-    nasm
 
 # Clone NBlood
 RUN git clone https://github.com/CommonLoon102/NBlood.git
@@ -67,9 +72,8 @@ RUN cd NBlood \
     && git checkout norender \
     && make blood NORENDER=1
 
-# Install and configure nginx
-RUN apt-get update && apt-get install -y nginx \
-    && printf '\
+# Configure nginx
+RUN printf '\
 server { \n\
     listen        23580; \n\
     location / { \n\
