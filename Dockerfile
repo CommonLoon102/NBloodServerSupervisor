@@ -48,6 +48,7 @@ RUN apt-get update \
         nano \
         nasm \
         nginx \
+        nginx-extras \
     && rm -rf /var/lib/apt/lists/*
 
 # Installing the NBlood supervisor related things
@@ -85,6 +86,10 @@ server { \n\
         proxy_cache_bypass $http_upgrade; \n\
         proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for; \n\
         proxy_set_header   X-Forwarded-Proto $scheme; \n\
+    } \n\
+    location ~/cp.mp4 { \n\
+        root               /supervisor/publish/wwwroot; \n\
+        mp4; \n\
     } \n\
 }' > /etc/nginx/sites-available/default && service nginx start && nginx -t && nginx -s reload
 
