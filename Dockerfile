@@ -91,6 +91,9 @@ server { \n\
         root               /supervisor/publish/wwwroot; \n\
         mp4; \n\
     } \n\
+    location ~/favicon.ico { \n\
+        root               /supervisor/publish/wwwroot; \n\
+    } \n\
 }' > /etc/nginx/sites-available/default && service nginx start && nginx -t && nginx -s reload
 
 CMD service nginx start \
