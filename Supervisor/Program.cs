@@ -5,7 +5,7 @@ using Model;
 
 namespace Supervisor
 {
-    class Program
+    static class Program
     {
         public static readonly State State = new State();
 

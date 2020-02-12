@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Supervisor
 {
-    class StatisticsManager
+    static class StatisticsManager
     {
         public static void Start()
         {
