@@ -11,7 +11,7 @@ namespace WebInterface.Services
 {
     public class CustomMapService : ICustomMapService
     {
-        private static readonly List<string> crypticMaps = new List<string>()
+        private static readonly IReadOnlyList<string> crypticMaps = new List<string>()
         {
             "CPSL.MAP",
             "CP01.MAP",
@@ -29,14 +29,14 @@ namespace WebInterface.Services
             "CPBB04.MAP",
         };
 
-        private List<string> ListableCustomMaps => Directory.GetFiles(CommandLineUtils.BloodDir)
+        private IReadOnlyList<string> ListableCustomMaps => Directory.GetFiles(CommandLineUtils.BloodDir)
             .Select(m => Path.GetFileName(m))
             .Where(m => m.ToUpper().EndsWith(".MAP"))
             .Where(m => !ContainsString(crypticMaps, m))
             .OrderBy(m => m)
             .ToList();
 
-        public IList<string> ListCustomMaps() => ListableCustomMaps;
+        public IReadOnlyList<string> ListCustomMaps() => ListableCustomMaps;
 
         public byte[] GetCustomMapBytes(string map)
         {
